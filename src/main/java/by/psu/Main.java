@@ -1,18 +1,53 @@
-import exception.TourServiceValidationException;
-import model.*;
+package by.psu;
+
+import by.psu.db.ConnectionManager;
+import by.psu.db.JdbcHelper;
+import by.psu.model.Excursion;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.Month;
-import java.util.HashMap;
-import java.util.Map;
 
-public class Main
-{
+public class Main {
 
-    static void main()
-    {
-        var hotelStay = new HotelStay();
+    static void main() {
+        try (var connectionManager = new ConnectionManager()) {
+            // get connection, print metadata
+            var connection = connectionManager.getConnection();
+            var metadata = connection.getMetaData();
+            var infoString = "Database: " + metadata.getDatabaseProductName()
+                    + "\nversion: " + metadata.getDatabaseMajorVersion() + '.' + metadata.getDatabaseMinorVersion();
+            System.out.println(infoString);
+
+            // begin transaction
+            connection.setAutoCommit(false);
+
+            // read from DB
+            JdbcHelper jdbcHelper = new JdbcHelper(connection);
+            var excursion = jdbcHelper.findExcursionById(1);
+            System.out.println(excursion);
+
+            // save (insert) to DB
+            var newExcursion = new Excursion(null, "travel", new BigDecimal("123.45"),
+                    LocalDate.now(), LocalDate.now().plusDays(2L), "F.E. Cgan",
+                    "Auto", true);
+            jdbcHelper.saveExcursion(newExcursion);
+
+            // save (update) to DB
+            newExcursion.setLunchIncluded(false);
+            jdbcHelper.saveExcursion(newExcursion);
+
+            // read all from DB
+            var list = jdbcHelper.findAllExcursions();
+            System.out.println(list);
+
+            //end transaction
+            connection.commit();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+
+        /*var hotelStay = new HotelStay();
         hotelStay.setId(1);
         hotelStay.setName("Отель Люкс");
         hotelStay.setPrice(new BigDecimal("5000"));
@@ -349,6 +384,6 @@ public class Main
 
         } catch (TourServiceValidationException e) {
             System.err.println("Ошибка: " + e.getMessage());
-        }
+        }*/
     }
 }

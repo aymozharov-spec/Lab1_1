@@ -65,7 +65,7 @@ public class Flight extends TourService {
     }
 }*/
 
-package model;
+package by.psu.model;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
