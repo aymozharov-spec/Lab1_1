@@ -97,4 +97,17 @@ public class JdbcHelper {
         statement.setInt(8, excursion.getId());
         statement.executeUpdate();
     }
+
+    public void deleteExcursionById(int id) throws SQLException {
+        String sql = "DELETE FROM public.excursion WHERE id = ?";
+        try (var stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            int affectedRows = stmt.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("Удаление не выполнено: экскурсия с id=" + id + " не найдена.");
+            }
+
+
+        }
+    }
 }
