@@ -1,13 +1,21 @@
 package by.psu.model;
 
+import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 
-public class Excursion extends TourService
-{
+@Entity
+@Table(name = "excursion")
+public class Excursion extends TourService {
+
+    @Column(name = "guide_name")
     private String guideName;
+
+    @Column(name = "excursion_type")
     private String excursionType;
+
+    @Column(name = "lunch_included")
     private boolean lunchIncluded;
 
     // Конструктор по умолчанию
@@ -50,16 +58,13 @@ public class Excursion extends TourService
     }
 
     @Override
-    public BigDecimal calculateTotalPrice(int participants)
-    {
+    public BigDecimal calculateTotalPrice(int participants) {
         BigDecimal totalPrice = getPrice().multiply(BigDecimal.valueOf(participants));
 
-        // Скидка 10% при participants > 10
         if (participants > 10) {
             totalPrice = totalPrice.multiply(new BigDecimal("0.9"));
         }
 
-        // Если включен обед, добавляем 15%
         if (lunchIncluded) {
             totalPrice = totalPrice.multiply(new BigDecimal("1.15"));
         }
@@ -68,8 +73,7 @@ public class Excursion extends TourService
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         DecimalFormat df = new DecimalFormat("#,##0.00");
         return "Excursion{" +
                 "id=" + getId() +

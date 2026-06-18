@@ -51,6 +51,8 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    volumes:
+      - ./target:/app/target
     networks:
       - app-net
 
