@@ -9,8 +9,8 @@ public class TestTourServiceApplication {
     }
 
 }*/
-
-/*package by.psu.tourservice;
+/*
+package by.psu.tourservice;
 
 import org.springframework.boot.SpringApplication;
 
