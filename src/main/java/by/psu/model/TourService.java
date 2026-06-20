@@ -14,7 +14,11 @@ public abstract class TourService {
 
     private String name;
     private BigDecimal price;
+
+    @Column(name = "\"from\"")  // ← ВАЖНО: экранируем кавычками
     private LocalDate from;
+
+    @Column(name = "\"to\"")    // ← ВАЖНО: экранируем кавычками
     private LocalDate to;
 
     public TourService() {}
@@ -29,15 +33,19 @@ public abstract class TourService {
 
     public abstract BigDecimal calculateTotalPrice(int participants);
 
-    // Геттеры и сеттеры...
+    // Геттеры и сеттеры
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
+
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
+
     public BigDecimal getPrice() { return price; }
     public void setPrice(BigDecimal price) { this.price = price; }
+
     public LocalDate getFrom() { return from; }
     public void setFrom(LocalDate from) { this.from = from; }
+
     public LocalDate getTo() { return to; }
     public void setTo(LocalDate to) { this.to = to; }
 
